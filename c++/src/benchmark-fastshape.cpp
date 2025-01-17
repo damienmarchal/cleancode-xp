@@ -4,6 +4,7 @@
 #include <iostream>
 #include "fastshape.h"
 
+template<int T>
 float computeCornerAreaSum(const std::vector<FastShape*> &shapes)
 {
     float accum0 = 0.0;
@@ -37,7 +38,7 @@ void fast_computeCornerArea4(benchmark::State &state)
     for (auto _ : state)
     {
         // This code gets timed
-        tmp += computeCornerAreaSum(shapes);
+        tmp += computeCornerAreaSum<4>(shapes);
         num_iteration +=1; 
     }
     std::cout << "Result FS computeCornerArea: " << tmp << " " << num_iteration << std::endl;
