@@ -8,17 +8,12 @@ template<int T>
 float computeCornerAreaSum(const std::vector<FastShape*> &shapes)
 {
     float accum0 = 0.0;
-    float accum1 = 0.0;
-    float accum2 = 0.0;
-    float accum3 = 0.0;
-    for (auto index = 0; index < shapes.size(); index += 4)
+    for (auto& shape : shapes)
     {
-        accum0 += 1.0 / (1.0 + shapes[index + 0]->cornerCount()) * shapes[index + 0]->area();
-        accum1 += 1.0 / (1.0 + shapes[index + 1]->cornerCount()) * shapes[index + 1]->area();
-        accum2 += 1.0 / (1.0 + shapes[index + 2]->cornerCount()) * shapes[index + 2]->area();
-        accum3 += 1.0 / (1.0 + shapes[index + 3]->cornerCount()) * shapes[index + 3]->area();
+        accum0 += 1.0 / (1.0 + shape->cornerCount()) * shape->area();
     }
-    return accum0 + accum1 + accum2 + accum3;
+
+    return accum0;
 }
 
 void fast_computeCornerArea4(benchmark::State &state)
