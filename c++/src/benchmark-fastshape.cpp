@@ -8,12 +8,26 @@ template<int T>
 float computeCornerAreaSum(const std::vector<FastShape*> &shapes)
 {
     float accum0 = 0.0;
-    for (auto& shape : shapes)
+    float accum1 = 0.0;
+    float accum2 = 0.0;
+    float accum3 = 0.0;
+    auto it = shapes.begin();
+    auto itEnd = shapes.end();
+
+    for (;it!=itEnd;)
     {
-        accum0 += 1.0 / (1.0 + shape->cornerCount()) * shape->area();
+        auto& shape0 = *it++;
+        auto& shape1 = *it++;
+        auto& shape2 = *it++;
+        auto& shape3 = *it++;
+
+        accum0 += 1.0 / (1.0 + shape0->cornerCount()) * shape0->area();
+        accum1 += 1.0 / (1.0 + shape1->cornerCount()) * shape1->area();
+        accum2 += 1.0 / (1.0 + shape2->cornerCount()) * shape2->area();
+        accum3 += 1.0 / (1.0 + shape3->cornerCount()) * shape3->area();
     }
 
-    return accum0;
+    return accum0 + accum1 + accum2 + accum3;
 }
 
 void fast_computeCornerArea4(benchmark::State &state)
@@ -34,7 +48,7 @@ void fast_computeCornerArea4(benchmark::State &state)
     {
         // This code gets timed
         tmp += computeCornerAreaSum<4>(shapes);
-        num_iteration +=1; 
+        num_iteration +=1;
     }
     std::cout << "Result FS computeCornerArea: " << tmp << " " << num_iteration << std::endl;
 }
