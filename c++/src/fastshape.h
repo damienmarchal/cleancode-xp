@@ -18,20 +18,20 @@ public:
         shape = shape_;
     }
     ShapeType type;
-    const Shape *shape;
+    Shape *shape;
 
     float area() const 
     {
         switch (type)
         {
         case ShapeType::Circle:
-            return static_cast<const Circle *>(shape)->Circle::area();
+            return static_cast<Circle *>(shape)->Circle::area();
         case ShapeType::Rectangle:
-            return static_cast<const Rectangle *>(shape)->Rectangle::area();
+            return static_cast<Rectangle *>(shape)->Rectangle::area();
         case ShapeType::Square:
-            return static_cast<const Square *>(shape)->Square::area();
+            return static_cast<Square *>(shape)->Square::area();
         case ShapeType::Triangle:
-            return static_cast<const Triangle *>(shape)->Triangle::area();
+            return static_cast<Triangle *>(shape)->Triangle::area();
         };
         return 0.0;
     }
