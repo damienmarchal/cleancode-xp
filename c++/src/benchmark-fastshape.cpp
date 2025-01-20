@@ -3,55 +3,72 @@
 #include <cmath>
 #include <iostream>
 #include "fastshape.h"
+#include "common.h"
 
 template<int T>
-float computeCornerAreaSum(const std::vector<FastShape*> &shapes)
+float computeCornerAreaSum4(std::vector<FastShape*>& shapes)
 {
     float accum0 = 0.0;
     float accum1 = 0.0;
     float accum2 = 0.0;
     float accum3 = 0.0;
-    auto it = shapes.begin();
-    auto itEnd = shapes.end();
-
-    for (;it!=itEnd;)
+    for (auto index = 0; index < shapes.size(); index += 4)
     {
-        auto& shape0 = *it++;
-        auto& shape1 = *it++;
-        auto& shape2 = *it++;
-        auto& shape3 = *it++;
-
-        accum0 += 1.0 / (1.0 + shape0->cornerCount()) * shape0->area();
-        accum1 += 1.0 / (1.0 + shape1->cornerCount()) * shape1->area();
-        accum2 += 1.0 / (1.0 + shape2->cornerCount()) * shape2->area();
-        accum3 += 1.0 / (1.0 + shape3->cornerCount()) * shape3->area();
+        accum0 += 1.0f / (1.0f + shapes[index + 0]->cornerCount()) * shapes[index + 0]->area();
+        accum1 += 1.0f / (1.0f + shapes[index + 1]->cornerCount()) * shapes[index + 1]->area();
+        accum2 += 1.0f / (1.0f + shapes[index + 2]->cornerCount()) * shapes[index + 2]->area();
+        accum3 += 1.0f / (1.0f + shapes[index + 3]->cornerCount()) * shapes[index + 3]->area();
     }
-
     return accum0 + accum1 + accum2 + accum3;
 }
 
-void fast_computeCornerArea4(benchmark::State &state)
+template<int T>
+float computeCornerAreaSum(std::vector<FastShape*>& shapes)
 {
-    // Perform setup here
-    std::vector<FastShape*> shapes;
-    for (int i = 0; i < 10000; i++)
+    float accum = 0.0;
+    for (const auto& shape : shapes)
     {
-        shapes.push_back(new FastShape(ShapeType::Square, new Square(3.0)));
-        shapes.push_back(new FastShape(ShapeType::Triangle, new Triangle(3.0, 4.0)));
-        shapes.push_back(new FastShape(ShapeType::Circle, new Circle(1.2)));
-        shapes.push_back(new FastShape(ShapeType::Rectangle, new Rectangle(3.0, 4.0)));
+        accum += 1.0f / (1.0f + shape->cornerCount()) * shape->area();
+    }
+    return accum;
+}
+
+template<class T>
+float yolo(T& shapes)
+{
+    return computeCornerAreaSum<1>(shapes);
+    //    return computeCornerAreaSum<1>(shapes);
+}
+
+void fast_computeCornerArea(benchmark::State &state)
+{
+    std::vector<FastShape*> fastshapes;
+    for (auto& shape : shapes)
+    {
+        FastShape *newshape;
+        if( dynamic_cast<Circle*>(shape) )
+            newshape = new FastShape(ShapeType::Circle, shape);
+        else if( dynamic_cast<Rectangle*>(shape) )
+            newshape = new FastShape(ShapeType::Rectangle, shape);
+        else if( dynamic_cast<Triangle*>(shape) )
+            newshape = new FastShape(ShapeType::Triangle, shape);
+        else if( dynamic_cast<Square*>(shape) )
+            newshape = new FastShape(ShapeType::Square, shape);
+        else
+            throw std::runtime_error("Unsupported shape");
+
+        fastshapes.push_back(newshape);
     }
 
     int num_iteration = 0;
     float tmp = 0;
     for (auto _ : state)
     {
-        // This code gets timed
-        tmp += computeCornerAreaSum<4>(shapes);
+        tmp += yolo(fastshapes);
         num_iteration +=1;
     }
     std::cout << "Result FS computeCornerArea: " << tmp << " " << num_iteration << std::endl;
 }
 
-BENCHMARK(fast_computeCornerArea4);
+BENCHMARK(fast_computeCornerArea);
 

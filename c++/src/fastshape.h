@@ -1,8 +1,10 @@
 #pragma once
 #include "shape.h"
+#include <iostream>
 
 enum class ShapeType
 {
+    INVALID,
     Square,
     Circle,
     Rectangle,
@@ -17,26 +19,28 @@ public:
         type = type_;
         shape = shape_;
     }
-    ShapeType type;
-    Shape *shape;
+    ShapeType type {ShapeType::INVALID};
+    Shape *shape{nullptr};
 
-    float area() const 
+    float area() const noexcept
     {
         switch (type)
         {
         case ShapeType::Circle:
-            return static_cast<Circle *>(shape)->Circle::area();
+            return Circle::area(shape);
         case ShapeType::Rectangle:
-            return static_cast<Rectangle *>(shape)->Rectangle::area();
+            return Rectangle::area(shape);
         case ShapeType::Square:
-            return static_cast<Square *>(shape)->Square::area();
+            return Square::area(shape);
         case ShapeType::Triangle:
-            return static_cast<Triangle *>(shape)->Triangle::area();
-        };
-        return 0.0;
+            return Triangle::area(shape);
+        case ShapeType::INVALID:
+            return 0.0f;
+        }
+        return 0.0f;
     }
 
-    int cornerCount() const
+    int constexpr cornerCount() const noexcept
     {
         switch (type)
         {
@@ -48,8 +52,10 @@ public:
             return 4;
         case ShapeType::Triangle:
             return 3;
+        case ShapeType::INVALID:
+            return -1;
         };
-        return 0;
+        return -1;
     }
 };
 
