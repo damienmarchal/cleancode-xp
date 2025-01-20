@@ -122,3 +122,18 @@ void fastshape_recursive_template_switch4(benchmark::State &state)
     std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
 }
 BENCHMARK(fastshape_recursive_template_switch4);
+
+void fastshape_recursive_template_switch_optimization(benchmark::State &state)
+{
+    auto fastshapes = create_fastshapes();
+    int num_iteration = 0;
+    float tmp = 0;
+    float first_shot = computeCornerAreaSum4(fastshapes);
+    for (auto _ : state)
+    {
+        tmp += first_shot;
+        num_iteration += 1;
+    }
+    std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
+}
+BENCHMARK(fastshape_recursive_template_switch_optimization);

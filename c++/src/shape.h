@@ -90,12 +90,12 @@ public:
     {
         radius = radius_;
     }
-    float area() const final override { return float(M_PI) * radius * radius; }
+    float area() const final override { return M_PIf * radius * radius; }
 
     static float area(Shape* shape)
     {
         auto self = static_cast<const Circle *>(shape);
-        return float(M_PI) * self->radius * self->radius;
+        return M_PIf * self->radius * self->radius;
     }
     int cornerCount() const final override { return 0; } // NON CLEAN CODE Lyskov violation
 

@@ -40,7 +40,7 @@ float yolo(T& shapes)
     //    return computeCornerAreaSum<1>(shapes);
 }
 
-void fast_computeCornerArea(benchmark::State &state)
+void fastshape_computeCornerArea(benchmark::State &state)
 {
     std::vector<FastShape*> fastshapes;
     for (auto& shape : shapes)
@@ -64,11 +64,12 @@ void fast_computeCornerArea(benchmark::State &state)
     float tmp = 0;
     for (auto _ : state)
     {
-        tmp += yolo(fastshapes);
+        float t = yolo(fastshapes);
+        tmp += t;
         num_iteration +=1;
     }
     std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
 }
 
-BENCHMARK(fast_computeCornerArea);
+BENCHMARK(fastshape_computeCornerArea);
 

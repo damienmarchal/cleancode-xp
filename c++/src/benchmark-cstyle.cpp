@@ -6,7 +6,7 @@
 
 typedef uint32_t u32;
 typedef float f32;
-#define Pi32 M_PI
+#define Pi32 M_PIf
 
 enum shape_type : u32
 {
@@ -71,7 +71,7 @@ f32 CornerAreaSwitch(u32 ShapeCount, shape_union *Shapes)
     return Accum;
 }
 
-static constexpr f32 const CTable[Shape_Count] = {1.0f / (1.0f + 4.0f), 1.0f / (1.0f + 4.0f), 0.5f / (1.0f + 3.0f), Pi32};
+static constexpr f32 const CTable[Shape_Count+1] = {1.0f / (1.0f + 4.0f), 1.0f / (1.0f + 4.0f), 0.5f / (1.0f + 3.0f), Pi32, 0.0f};
 f32 GetCornerAreaUnion(shape_union Shape)
 {
     f32 Result = CTable[Shape.Type]*Shape.Width*Shape.Height;
