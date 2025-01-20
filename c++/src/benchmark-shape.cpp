@@ -8,6 +8,31 @@
 
 float computeCornerAreaSum(const std::vector<Shape*>& shapes)
 {
+    float accum = 0.0;
+    for (const auto& shape : shapes)
+    {
+        accum += 1.0f / (1.0f + shape->cornerCount()) * shape->area();
+    }
+    return accum;
+}
+
+void shape_computeCornerArea_virtualcall(benchmark::State &state)
+{
+    int num_iteration = 0;
+    float tmp = 0;
+    for (auto _ : state)
+    {
+        tmp += computeCornerAreaSum(shapes);
+        num_iteration += 1;
+    }
+    std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
+}
+BENCHMARK(shape_computeCornerArea_virtualcall);
+
+
+
+float computeCornerAreaSum4(const std::vector<Shape*>& shapes)
+{
     float accum0 = 0.0;
     float accum1 = 0.0;
     float accum2 = 0.0;
@@ -22,16 +47,15 @@ float computeCornerAreaSum(const std::vector<Shape*>& shapes)
     return accum0 + accum1 + accum2 + accum3;
 }
 
-void default_computeCornerArea(benchmark::State &state)
+void shape_computeCornerArea_virtualcall4(benchmark::State &state)
 {
     int num_iteration = 0;
     float tmp = 0;
     for (auto _ : state)
     {
-        tmp += computeCornerAreaSum(shapes);
+        tmp += computeCornerAreaSum4(shapes);
         num_iteration += 1;
     }
-    std::cout << "Result FS computeCornerArea: " << tmp << " " << num_iteration << std::endl;
+    std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
 }
-
-BENCHMARK(default_computeCornerArea);
+BENCHMARK(shape_computeCornerArea_virtualcall4);

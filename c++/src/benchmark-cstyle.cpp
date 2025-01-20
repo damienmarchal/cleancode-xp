@@ -136,6 +136,7 @@ void cstyle_computeCornerArea_with_switch(benchmark::State &state)
         tmp += CornerAreaSwitch(shapes.size(), cshapes);
         num_iteration += 1;
     }
+    delete cshapes;
     std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
 }
 BENCHMARK(cstyle_computeCornerArea_with_switch);
@@ -150,6 +151,7 @@ void cstyle_computeCornerArea_with_union(benchmark::State &state)
         tmp += CornerAreaUnion(shapes.size(), cshapes);
         num_iteration += 1;
     }
+    delete cshapes;
     std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
 }
 BENCHMARK(cstyle_computeCornerArea_with_union);

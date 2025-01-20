@@ -4,7 +4,6 @@
 
 enum class ShapeType
 {
-    INVALID,
     Square,
     Circle,
     Rectangle,
@@ -19,10 +18,10 @@ public:
         type = type_;
         shape = shape_;
     }
-    ShapeType type {ShapeType::INVALID};
+    ShapeType type {ShapeType::Square};
     Shape *shape{nullptr};
 
-    float area() const noexcept
+    float area() const
     {
         switch (type)
         {
@@ -34,8 +33,6 @@ public:
             return Square::area(shape);
         case ShapeType::Triangle:
             return Triangle::area(shape);
-        case ShapeType::INVALID:
-            return 0.0f;
         }
         return 0.0f;
     }
@@ -52,8 +49,6 @@ public:
             return 4;
         case ShapeType::Triangle:
             return 3;
-        case ShapeType::INVALID:
-            return -1;
         };
         return -1;
     }

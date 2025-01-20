@@ -67,7 +67,7 @@ void fast_computeCornerArea(benchmark::State &state)
         tmp += yolo(fastshapes);
         num_iteration +=1;
     }
-    std::cout << "Result FS computeCornerArea: " << tmp << " " << num_iteration << std::endl;
+    std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
 }
 
 BENCHMARK(fast_computeCornerArea);

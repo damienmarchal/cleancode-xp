@@ -73,8 +73,7 @@ float computeCornerAreaSum4(const std::vector<FastShape*>& shapes)
     return accum0 + accum1 + accum2 + accum3;
 }
 
-void fastshape_templateBaseSwitch(benchmark::State &state)
-{
+std::vector<FastShape*> create_fastshapes(){
     std::vector<FastShape*> fastshapes;
     for (auto& shape : shapes)
     {
@@ -92,7 +91,12 @@ void fastshape_templateBaseSwitch(benchmark::State &state)
 
         fastshapes.push_back(newshape);
     }
+    return fastshapes;
+}
 
+void fastshape_recursive_template_switch(benchmark::State &state)
+{
+    auto fastshapes = create_fastshapes();
     int num_iteration = 0;
     float tmp = 0;
     for (auto _ : state)
@@ -100,8 +104,21 @@ void fastshape_templateBaseSwitch(benchmark::State &state)
         tmp += computeCornerAreaSum(fastshapes);
         num_iteration += 1;
     }
-    std::cout << "Result FS computeCornerArea: " << tmp << " " << num_iteration << std::endl;
-
+    std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
 }
+BENCHMARK(fastshape_recursive_template_switch);
 
-BENCHMARK(fastshape_templateBaseSwitch);
+
+void fastshape_recursive_template_switch4(benchmark::State &state)
+{
+    auto fastshapes = create_fastshapes();
+    int num_iteration = 0;
+    float tmp = 0;
+    for (auto _ : state)
+    {
+        tmp += computeCornerAreaSum4(fastshapes);
+        num_iteration += 1;
+    }
+    std::cout << "Result: " << tmp << " in " << num_iteration << std::endl;
+}
+BENCHMARK(fastshape_recursive_template_switch4);
